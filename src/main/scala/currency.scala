@@ -4,5 +4,5 @@ object implicitFunctions{
     def CHF = (n*0.93).toFloat
   }
 
-  implicit def hello(n:Float)= new currency(n)
+  implicit def currencyConversion(n:Float)= new currency(n)
 }

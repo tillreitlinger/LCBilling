@@ -1,4 +1,4 @@
 object places {
-  val supermarket = Place("Supermarket")
-  val cinema = Place("cinema")
+  val supermarket = "Supermarket"
+  val cinema = "cinema"
 }
