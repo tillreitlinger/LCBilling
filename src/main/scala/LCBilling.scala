@@ -11,7 +11,6 @@ object LCBilling {
     val Martin = "Martin"
     val PetershausnerPark = LC(roommates = Till, Paul, Martin)
 
-
     val outlay = Outlay(None, None, None, None)
     val bill = PetershausnerPark generateBill (
       outlay from Paul towards (Till, Paul) of 500.EUR at supermarket,
