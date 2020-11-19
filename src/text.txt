@@ -1,3 +1,4 @@
-neue wg mit: paul, till, martin, felix, hans
-Paul pays 500 EUR to Till, Paul at supermarket
-Paul receives 500 EUR from Till at supermarket
+neue wg erstellen mit: paul, till, martin, felix, hans
+Paul pays 24 EUR to Till, Paul at supermarket
+Paul receives 12 EUR from Till at sport
+martin pays 14 CHF to Till, Felix, Hans at supermarket
