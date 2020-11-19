@@ -10,7 +10,7 @@ class OutlayTest extends AnyWordSpec with Matchers{
   }
   "The function 'towards' should return a Outlay object with 'Martin, Till', if 'Martin, Till' is passed" in{
     val result_outlay = Outlay(None, Some(Seq("Martin","Till")), None, None)
-    outlay towards ("Martin","Till") should be(result_outlay)
+    outlay towards List("Martin","Till") should be(result_outlay)
   }
   "The function 'of' should return a Outlay object with '100', if '100.EUR' is passed" in{
     val result_outlay = Outlay(None, None, Some(100), None)
@@ -26,7 +26,7 @@ class OutlayTest extends AnyWordSpec with Matchers{
   }
   "The function chain should return a Outlay object" in{
     val result_outlay = Outlay(Some("Martin"), Some(Seq("Till", "Paul", "Martin")), Some(222), Some("cinema"))
-    outlay from "Martin" towards ("Till", "Paul", "Martin") of 222.EUR at "cinema" should be(result_outlay)
+    outlay from "Martin" towards List("Till", "Paul", "Martin") of 222.EUR at "cinema" should be(result_outlay)
   }
 
 }

@@ -2,7 +2,7 @@ case class Outlay(payedFrom: Option[String], payedFor: Option[Seq[String]], amou
   def from(person: String)={
     copy(Some(person), payedFor, amount, at)
   }
-  def towards(persons: String*)={
+  def towards(persons: List[String])={
     copy(payedFrom, Some(persons), amount, at)
   }
   def of(amount: Float) ={

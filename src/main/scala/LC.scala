@@ -1,8 +1,8 @@
-import javax.tools.DocumentationTool.Location
 
-case class LC(roommates: String*) {
 
-  def generateBill(outlays: Outlay*)={
+case class LC(roommates: Seq[String]) {
+
+  def generateBill(outlays: List[Outlay])={
     val initalSituation = getInitalSituation(roommates)
     val bill = getFinalSituation(initalSituation, outlays)
     val sum = generateSum(bill)
@@ -31,7 +31,7 @@ case class LC(roommates: String*) {
     payInstructionString.mkString("")
   }
 
-  def getFinalSituation(initalSituation: Vector[Float], outlays: Seq[Outlay]):Seq[Vector[Float]] ={
+  def getFinalSituation(initalSituation: Vector[Float], outlays: List[Outlay]):Seq[Vector[Float]] ={
     val complete_list = outlays.map{
       overlay => {
         val payedFrom = roommates.indexOf(overlay.payedFrom.get)
@@ -61,7 +61,7 @@ case class LC(roommates: String*) {
     }
   }
 
-  def getLocations(outlays: Seq[Outlay])={
+  def getLocations(outlays: List[Outlay])={
     val locations = outlays.map{
       overlay => overlay.at.get
     }
