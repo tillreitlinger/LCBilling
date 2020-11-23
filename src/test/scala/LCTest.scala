@@ -5,7 +5,7 @@ import implicitFunctions._
 
 class LCTest extends AnyWordSpec with Matchers{
   "The Function gnerateBill should return a right formatted String on the Input with the otlays" in{
-    val result_bill = "\tTill\tPaul\tMartin\n\t-250,00\t250,00\t0,00\tsupermarket\n\t200,00\t-200,00\t0,00\tcinema\n\t-50,00\t50,00\t0,00\nTill has to pay -50.0 Euro\nPaul has to receive 50.0 Euro\nMartin has to receive 0.0 Euro\n"
+    val result_bill = "\tTill\tPaul\tMartin\n\t-250.00\t250.00\t0.00\tsupermarket\n\t200.00\t-200.00\t0.00\tcinema\n\t-50.00\t50.00\t0.00\nTill has to pay -50.0 Euro\nPaul has to receive 50.0 Euro\nMartin has to receive 0.0 Euro\n"
     val Paul = "Paul"
     val Till = "Till"
     val Martin = "Martin"
@@ -31,7 +31,7 @@ class LCTest extends AnyWordSpec with Matchers{
   }
 
   "The Function createBillString should return a right formatted String which includes all the purchases but not the end result" in{
-    val result_bill = "\t-250,00\t250,00\t0,00\tsupermarket\n\t200,00\t-200,00\t0,00\tcinema"
+    val result_bill = "\t-250.00\t250.00\t0.00\tsupermarket\n\t200.00\t-200.00\t0.00\tcinema"
     val Paul = "Paul"
     val Till = "Till"
     val Martin = "Martin"
@@ -55,7 +55,7 @@ class LCTest extends AnyWordSpec with Matchers{
 
   "The function createSumString should return a String which includes the last row of the bill" in{
     val PetershausnerPark = LC(Seq("Person1", "Person2", "Person3", "Person4"))
-    val result_string = "\n\t50,00\t-50,00\n"
+    val result_string = "\n\t50.00\t-50.00\n"
     PetershausnerPark.createSumString(List(50,-50)) should be(result_string)
   }
 

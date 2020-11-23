@@ -6,7 +6,6 @@ class BillingParser extends RegexParsers {
   def person_list = "([a-zA-ZöÖäÄüÜ]+,\\s*)*[a-zA-Z]+".r
   def person = "[a-zA-ZöÖäÄüÜ]+".r
   def recievesOrPayes = "(receives)|(pays)".r
-  def space = "\\s".r
   def at = "at".r
   def fromOrTo = "(from)|(to)".r
   def currency = "(EUR)|(CHF)".r
