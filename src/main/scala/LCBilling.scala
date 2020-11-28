@@ -1,6 +1,9 @@
-import Messages.{CreateBankAccount, GetBalance, PrintBalance, Transaction}
+import Messages.{CreateBankAccount, PrintBalance}
 import akka.actor.{ActorSystem, Props}
+import akka.pattern.ask
 
+import scala.concurrent.duration.{Duration, DurationInt}
+import scala.concurrent.{Await, Future}
 import scala.io.Source
 
 object LCBilling extends App{
@@ -19,6 +22,7 @@ object LCBilling extends App{
     }
 
     print("\n\nThis is the Actor result:\n")
-    bankActor ! PrintBalance
+    val resultString : Future[Any]=bankActor.ask(PrintBalance)(10.seconds)
+    print(Await.result(resultString,Duration.Inf))
 
 }

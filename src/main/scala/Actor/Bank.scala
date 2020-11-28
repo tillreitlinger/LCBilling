@@ -1,12 +1,10 @@
 
-import akka.actor.{Actor, ActorRef, ActorSystem, Props}
-import akka.event.Logging
 import Messages._
+import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import akka.pattern.ask
 
-import scala.collection.mutable.ListBuffer
-import scala.concurrent.{Await, Future}
 import scala.concurrent.duration.{Duration, DurationInt}
+import scala.concurrent.{Await, Future}
 
 
 class Bank extends Actor {
@@ -16,8 +14,8 @@ class Bank extends Actor {
 
   def receive = {
     case CreateBankAccount(name) => lcMembers += addRoommateActor(name)
-    case Transaction(outlay) => tryToChancheBalanceAcordingToOutlay(outlay)
-    case PrintBalance => print(getStringOfBalanceOfAllLcMembers())
+    case Transaction(outlay) => print(tryToChancheBalanceAcordingToOutlay(outlay))
+    case PrintBalance => sender ! getStringOfBalanceOfAllLcMembers()
     case _ => sender ! Failed
   }
 
@@ -25,8 +23,8 @@ class Bank extends Actor {
     name -> system.actorOf(Props[BankAccount], name + "sAccount")
   }
 
-  def tryToChancheBalanceAcordingToOutlay(outlay: Outlay): Unit ={
-    if(!calculateTransaction(outlay)) print("Error in Outlay " + outlay + "\nThe Balance stays unchanged")
+  def tryToChancheBalanceAcordingToOutlay(outlay: Outlay): String ={
+    if(!calculateTransaction(outlay)) "Error in Outlay " + outlay + "\nThe Balance stays unchanged" else ""
   }
 
   def calculateTransaction(outlay: Outlay):Boolean={
