@@ -24,4 +24,8 @@ class BankAccount extends Actor {
     case _ => sender ! Failed
   }
 
+  def sleep(): Unit ={
+    Thread.sleep(20) // wait for 1000 millisecond
+  }
+
 }

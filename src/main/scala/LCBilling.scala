@@ -17,7 +17,9 @@ object LCBilling extends App{
     val bankActor = system.actorOf(Props[Bank], "bank")
     lc.get.roommates.map(roomate => bankActor ! CreateBankAccount(roomate))
 
-    for( a <- 1 to 10){
+
+
+    for( a <- 1 to 1){
         new Thread(new ActorThread(outlay_list, bankActor)).start()
     }
 

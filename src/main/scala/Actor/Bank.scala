@@ -9,7 +9,7 @@ import scala.concurrent.{Await, Future}
 
 class Bank extends Actor {
   val system = ActorSystem("Bank-System")
-  val timeOutTime = 10.seconds
+  val timeOutTime = 5.milliseconds
   var lcMembers: Map[String, ActorRef] = Map()
 
   def receive = {
@@ -39,12 +39,16 @@ class Bank extends Actor {
 
   def calculateEveryWithdraw(costForEach: Float, outlay: Outlay):Boolean={
     val result = outlay.payedFor.get.map(member => {
-      val result: Future[Any] = lcMembers(member).ask(Withdraw(costForEach))(timeOutTime)
-      if (Await.result(result, Duration.Inf) == Failed) {
-        print("Failed Transaction\n")
-        false
-      }else{true}
-    })
+      if (lcMembers.contains(member)) {
+        val result: Future[Any] = lcMembers(member).ask(Withdraw(costForEach))(timeOutTime)
+        if (Await.result(result, Duration.Inf) == Failed) {
+          false
+        } else {
+          true
+        }
+      }else false
+      })
+
     if (result.contains(false)) false
     else true
   }
@@ -58,20 +62,21 @@ class Bank extends Actor {
   }
 
   def getStringOfBalanceOfAllLcMembers():String= {
-    val balanceString = lcMembers.map { case (key, member) =>
-      val result: Future[Any] = member.ask(GetBalance)(timeOutTime)
-      val amount = Await.result(result, Duration.Inf)
-      if (amount == Failed) {
-        "Failed to get Balance\n"
-      }
-      else {
-        "The Balance of " + key + " is " + amount.toString + "\n"
-      }
-    }.mkString("")
+    val balanceString = {
+      if (lcMembers.size == 0) "There are no members in the LC"
+      else lcMembers.map { case (key, member) =>
+        val result: Future[Any] = member.ask(GetBalance)(timeOutTime)
+        val amount = Await.result(result, Duration.Inf)
+        if (amount == Failed) {
+          "Failed to get Balance\n"
+        }
+        else {
+          "The Balance of " + key + " is " + amount.toString + "\n"
+        }
+      }.mkString("")
+    }
     balanceString
   }
-
-
 }
 
 
