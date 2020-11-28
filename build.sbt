@@ -10,3 +10,4 @@ libraryDependencies += "org.scala-lang.modules" %% "scala-parser-combinators" % 
 
 val AkkaVersion = "2.6.10"
 libraryDependencies += "com.typesafe.akka" %% "akka-actor" % AkkaVersion
+libraryDependencies += "com.typesafe.akka" %% "akka-testkit" % AkkaVersion % Test
