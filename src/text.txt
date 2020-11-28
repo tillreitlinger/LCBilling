@@ -2,3 +2,18 @@ neue wg erstellen mit: paul, till, martin, felix, hans
 Paul pays 24 EUR to Till, Paul at supermarket
 Paul receives 12 EUR from Till at sport
 martin pays 14 CHF to Till, Felix, Hans at supermarket
+Paul pays 56 EUR to Till, Paul at supermarket
+Paul receives 12 EUR from Till at sport
+martin pays 87 CHF to Till, Felix, Hans at supermarket
+Paul pays 35 EUR to Till, Paul at supermarket
+Paul receives 76 EUR from Till at sport
+martin pays 87 CHF to Till, Felix, Hans at supermarket
+Paul pays 97 EUR to Till, Paul at supermarket
+Paul receives 97 EUR from Till at sport
+martin pays 97 CHF to Till, Felix, Hans at supermarket
+Paul pays 689 EUR to Till, Paul at supermarket
+Paul receives 68 EUR from Till at sport
+martin pays 2354 CHF to Till, Felix, Hans at supermarket
+Paul pays 45 EUR to Till, Paul at supermarket
+Paul receives 68 EUR from Till at sport
+martin pays 1484 CHF to Till, Felix, Hans at supermarket
