@@ -25,7 +25,7 @@ class BankAccount extends Actor {
   }
 
   def sleep(): Unit ={
-    Thread.sleep(20) // wait for 1000 millisecond
+    Thread.sleep(5) // wait for 1000 millisecond
   }
 
 }

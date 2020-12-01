@@ -9,13 +9,14 @@ import scala.concurrent.{Await, Future}
 
 class Bank extends Actor {
   val system = ActorSystem("Bank-System")
-  val timeOutTime = 5.milliseconds
+  val timeOutTime = 200.milliseconds
   var lcMembers: Map[String, ActorRef] = Map()
 
   def receive = {
     case CreateBankAccount(name) => lcMembers += addRoommateActor(name)
     case Transaction(outlay) => print(tryToChancheBalanceAcordingToOutlay(outlay))
     case PrintBalance => sender ! getStringOfBalanceOfAllLcMembers()
+    case GetCSV => sender ! getCSVFormatBalance()
     case _ => sender ! Failed
   }
 
@@ -72,6 +73,23 @@ class Bank extends Actor {
         }
         else {
           "The Balance of " + key + " is " + amount.toString + "\n"
+        }
+      }.mkString("")
+    }
+    balanceString
+  }
+
+  def getCSVFormatBalance():String= {
+    val balanceString = {
+      if (lcMembers.size == 0) "There are no members in the LC"
+      else lcMembers.map { case (key, member) =>
+        val result: Future[Any] = member.ask(GetBalance)(timeOutTime)
+        val amount = Await.result(result, Duration.Inf)
+        if (amount == Failed) {
+          "Failed to get Balance\n"
+        }
+        else {
+          amount.toString + ", "
         }
       }.mkString("")
     }

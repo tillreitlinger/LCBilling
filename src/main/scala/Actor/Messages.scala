@@ -18,6 +18,8 @@ object Messages {
 
   case object PrintBalance
 
+  case object GetCSV
+
   case object Done
 
   case object Failed
