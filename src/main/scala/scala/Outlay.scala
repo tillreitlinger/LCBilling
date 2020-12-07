@@ -1,3 +1,5 @@
+package scala
+
 case class Outlay(payedFrom: Option[String], payedFor: Option[Seq[String]], amount: Option[Float], at: Option[String]) {
   def from(person: String) = {
     copy(Some(person), payedFor, amount, at)

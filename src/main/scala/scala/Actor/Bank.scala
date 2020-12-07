@@ -1,3 +1,5 @@
+package scala.Actor
+
 
 import Messages._
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
@@ -25,7 +27,7 @@ class Bank extends Actor {
   }
 
   def tryToChancheBalanceAcordingToOutlay(outlay: Outlay): String ={
-    if(!calculateTransaction(outlay)) "Error in Outlay " + outlay + "\nThe Balance stays unchanged" else ""
+    if(!calculateTransaction(outlay)) "Error in scala.Outlay " + outlay + "\nThe Balance stays unchanged" else ""
   }
 
   def calculateTransaction(outlay: Outlay):Boolean={
@@ -64,7 +66,7 @@ class Bank extends Actor {
 
   def getStringOfBalanceOfAllLcMembers():String= {
     val balanceString = {
-      if (lcMembers.size == 0) "There are no members in the LC"
+      if (lcMembers.size == 0) "There are no members in the scala.LC"
       else lcMembers.map { case (key, member) =>
         val result: Future[Any] = member.ask(GetBalance)(timeOutTime)
         val amount = Await.result(result, Duration.Inf)
@@ -81,7 +83,7 @@ class Bank extends Actor {
 
   def getCSVFormatBalance():String= {
     val balanceString = {
-      if (lcMembers.size == 0) "There are no members in the LC"
+      if (lcMembers.size == 0) "There are no members in the scala.LC"
       else lcMembers.map { case (key, member) =>
         val result: Future[Any] = member.ask(GetBalance)(timeOutTime)
         val amount = Await.result(result, Duration.Inf)

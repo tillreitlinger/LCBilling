@@ -1,3 +1,5 @@
+package scala.ExternalDSL
+
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -5,14 +7,14 @@ import scala.language.postfixOps
 import implicitFunctions._
 class BillingParserModelTest extends AnyWordSpec with Matchers{
 
-  "The Function generateOutlay should return an Outlay Object with the given Parameters " in{
+  "The Function generateOutlay should return an scala.Outlay Object with the given Parameters " in{
     val billingParserModel = new BillingParserModel()
     billingParserModel.generateOutlay("Paul", "100", "EUR", "Till, Paul", "Supermarket", "pays") should be(Outlay(Some("Paul"), Some(List("till", "paul")), Some(100), Some("Supermarket")))
   }
 
-  "The Function generateLCFromTXTSting should return a LC Object with the given Parameters from the String" in{
+  "The Function generateLCFromTXTSting should return a scala.LC Object with the given Parameters from the String" in{
     val billingParserModel = new BillingParserModel()
-    val inputSting = "Create a ne LC with the Roommates: Paul, Till, Martin"
+    val inputSting = "Create a new LC with the Roommates: Paul, Till, Martin"
     billingParserModel.generateLCFromTXTString(inputSting) should be(Some(LC(Seq("paul", "till", "martin"))))
   }
 

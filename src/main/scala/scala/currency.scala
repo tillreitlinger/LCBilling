@@ -1,3 +1,5 @@
+package scala
+
 object implicitFunctions{
   class currency(n:Float){
     def EUR = n

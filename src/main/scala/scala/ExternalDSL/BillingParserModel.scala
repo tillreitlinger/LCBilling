@@ -1,3 +1,5 @@
+package scala.ExternalDSL
+
 import implicitFunctions._
 import scala.language.postfixOps
 

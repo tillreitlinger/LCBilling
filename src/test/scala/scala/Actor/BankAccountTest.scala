@@ -1,7 +1,9 @@
-import Messages.{Deposit, Done, GetBalance, Withdraw, Failed}
+package scala.Actor
+
+import scala.Actor.Messages.{Deposit, Done, Failed, GetBalance, Withdraw}
 import akka.actor.{ActorSystem, Props}
 import akka.testkit.{ImplicitSender, TestKit}
-import org.scalatest.{BeforeAndAfterAll}
+import org.scalatest.BeforeAndAfterAll
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 

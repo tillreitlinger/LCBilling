@@ -1,3 +1,5 @@
+package scala.ExternalDSL
+
 import scala.util.parsing.combinator._
 
 class BillingParser extends RegexParsers {

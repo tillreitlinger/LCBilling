@@ -40,7 +40,7 @@ class LCTest extends AnyWordSpec with Matchers{
     bill_string should be(result_bill)
   }
 
-  "The function getInitalSituation should return a vec with one 0 for each part of the LC" in{
+  "The function getInitalSituation should return a vec with one 0 for each part of the scala.LC" in{
     val persons = Seq("Person1", "Person2", "Person3", "Person4")
     val result = Vector(0,0,0,0)
     val PetershausnerPark = LC(Seq("Person1"))

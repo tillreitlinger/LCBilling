@@ -1,4 +1,6 @@
-import Messages.Transaction
+package scala.Actor.Threads
+
+import scala.Actor.Messages.Transaction
 import akka.actor.ActorRef
 
 class ActorThread(outlayList : List[Option[Outlay]], bankActor: ActorRef) extends Runnable{

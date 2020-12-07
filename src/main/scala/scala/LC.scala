@@ -1,3 +1,5 @@
+package scala
+
 case class LC(roommates: Seq[String]) {
 
   def generateBill(outlays: List[Outlay]) = {

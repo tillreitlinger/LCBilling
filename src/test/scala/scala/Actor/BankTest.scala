@@ -1,4 +1,5 @@
-import Messages.{CreateBankAccount, PrintBalance, Transaction}
+package scala.Actor
+
 import akka.actor.{ActorSystem, Props}
 import akka.pattern.ask
 import akka.testkit.{ImplicitSender, TestActorRef, TestKit}
@@ -6,6 +7,8 @@ import org.scalatest.BeforeAndAfterAll
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
+import scala.Actor.Messages.{CreateBankAccount, PrintBalance, Transaction}
+import scala.ExternalDSL.BillingParserModel
 import scala.concurrent.duration.{Duration, DurationInt}
 import scala.concurrent.{Await, Future}
 
