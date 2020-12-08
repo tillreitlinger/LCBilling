@@ -14,3 +14,5 @@ libraryDependencies += "com.typesafe.akka" %% "akka-testkit" % AkkaVersion % Tes
 
 libraryDependencies += "com.typesafe.akka" %% "akka-stream" % AkkaVersion
 libraryDependencies += "com.typesafe.akka" %% "akka-stream-testkit" % AkkaVersion % Test
+
+libraryDependencies += "org.apache.kafka" %% "kafka" % "2.6.0"

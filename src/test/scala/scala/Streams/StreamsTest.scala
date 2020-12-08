@@ -28,7 +28,7 @@ class StreamsTest extends AnyWordSpec with Matchers{
   }
 
   "The sink should return Done, when the File is created" in{
-    val sinkUnderTest = streams.writeToCSV
+    val sinkUnderTest = streams.sendAccountBalanceViaKafka
     val future = streams.linesFromTXT.runWith(sinkUnderTest)
     val result = Await.result(future, 3.seconds)
     assert(result == akka.Done)

@@ -21,8 +21,8 @@ object LCBilling extends App {
   lc.get.roommates.map(roomate => bankActor ! CreateBankAccount(roomate))
 
   val streams = new Streams(bankActor, "./src/text.txt", "./src/output.txt")
-  streams.linesFromTXT.via(streams.generateOutlay).via(streams.doTransaction).runWith(streams.writeToCSV).onComplete(_ => {
-    streams.writer.close
+  streams.linesFromTXT.via(streams.generateOutlay).via(streams.doTransaction).runWith(streams.sendAccountBalanceViaKafka).onComplete(_ => {
+    streams.closeWriterStream
     print("Finished")
   })
 
