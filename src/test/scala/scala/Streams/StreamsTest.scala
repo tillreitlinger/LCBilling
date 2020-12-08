@@ -15,7 +15,7 @@ class StreamsTest extends AnyWordSpec with Matchers{
 
   implicit val system = ActorSystem("Main-System")
   val bankActor = system.actorOf(Props[Bank], "bank")
-  val streams = new Streams(bankActor, "./src/test/scala/scala/Streams/test_text.txt", "./src/test/scala/scala/Streams/test_output.txt")
+  val streams = new Streams(bankActor, "./src/test/scala/scala/Streams/test_text.txt")
   val billingParserModel = new BillingParserModel()
   val lc = billingParserModel.generateLCFromTXTString("neue wg erstellen mit: paul, till, martin, felix, hans")
   lc.get.roommates.map(roomate => bankActor ! CreateBankAccount(roomate))
@@ -32,7 +32,7 @@ class StreamsTest extends AnyWordSpec with Matchers{
     val future = streams.linesFromTXT.runWith(sinkUnderTest)
     val result = Await.result(future, 3.seconds)
     assert(result == akka.Done)
-    streams.writer.close()
+    streams.closeWriterStream()
   }
 
   "When the Stream finished, there should be content in the file" in{

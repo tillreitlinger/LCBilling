@@ -1,7 +1,5 @@
 package scala.Streams
 
-import java.io.{BufferedWriter, FileWriter}
-
 import akka.NotUsed
 import akka.actor.ActorRef
 import akka.pattern.ask
@@ -13,14 +11,12 @@ import scala.Kafka.Producer
 import scala.concurrent.duration.{Duration, DurationInt}
 import scala.concurrent.{Await, Future}
 
-class Streams(bankActor: ActorRef, readFileName: String, writeFileName: String){
+class Streams(bankActor: ActorRef, readFileName: String){
 
   val input_from_txt = scala.io.Source.fromFile(readFileName).getLines.toList
   val billingParserModel = new BillingParserModel()
 
   val producer = new Producer()
-
-  val writer = new BufferedWriter(new FileWriter(writeFileName))
 
   val linesFromTXT: Source[String, NotUsed] = Source(input_from_txt.drop(1))
 

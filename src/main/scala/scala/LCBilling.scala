@@ -20,7 +20,7 @@ object LCBilling extends App {
   val lc = billingParserModel.generateLCFromTXTString(input_from_txt(0))
   lc.get.roommates.map(roomate => bankActor ! CreateBankAccount(roomate))
 
-  val streams = new Streams(bankActor, "./src/text.txt", "./src/output.txt")
+  val streams = new Streams(bankActor, "./src/text.txt")
   streams.linesFromTXT.via(streams.generateOutlay).via(streams.doTransaction).runWith(streams.sendAccountBalanceViaKafka).onComplete(_ => {
     streams.closeWriterStream
     print("Finished")
