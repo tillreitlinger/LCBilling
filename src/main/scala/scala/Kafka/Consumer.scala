@@ -24,19 +24,25 @@ object Consumer extends App {
 
   consumer.subscribe(util.Collections.singletonList(ACCOUNT_BALANCE_TOPIC))
 
-  val writer = new BufferedWriter(new FileWriter("./src/output.txt"))
+  var writer = new BufferedWriter(new FileWriter("./src/output.txt"))
+  var isWriterOpen = true
   while(true){
     println("Empfange..")
     val records=consumer.poll(100)
     for (record<-records.asScala){
       record.key() match{
         case BALANCE_DATA_KEY => {
+          if(isWriterOpen == false){
+            writer = new BufferedWriter(new FileWriter("./src/output.txt"))
+            isWriterOpen = true
+          }
           writer.write(record.value())
         }
         case CLOSE_WRITER_KEY => {
           println("close writer now")
           Thread.sleep(10)
           writer.close()
+          isWriterOpen = false
         }
       }
     }
