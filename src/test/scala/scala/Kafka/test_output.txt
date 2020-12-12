@@ -1,0 +1,1 @@
+Paul pays 10 EUR to Till, Paul at supermarketTill pays 20 EUR to Till, Paul at supermarketmartin pays 20 EUR to martin, felix at supermarketfelix pays 10 EUR to felix, hans at supermarketPaul pays 10 EUR to Till, Paul at supermarketTill pays 20 EUR to Till, Paul at supermarket

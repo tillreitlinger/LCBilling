@@ -19,7 +19,8 @@ class Producer{
 
   def sendNewAccountBalance(newAccountBalance:String): Unit ={
     val message = new ProducerRecord(ACCOUNT_BALANCE_TOPIC, BALANCE_DATA_KEY, newAccountBalance)
-    producer.send(message)
+    val send_return = producer.send(message)
+    print(send_return)
   }
   def sendCloseWriterStream(): Unit ={
     val message = new ProducerRecord(ACCOUNT_BALANCE_TOPIC, CLOSE_WRITER_KEY, "closewriter")
