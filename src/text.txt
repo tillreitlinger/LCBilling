@@ -7,3 +7,4 @@ Paul pays 10 EUR to Till, Paul at supermarket
 Paul pays 10 EUR to Till, Paul at supermarket
 Till pays 20 EUR to Till, Paul at supermarket
 martin pays 20 EUR to martin, felix at supermarket
+martin pays 4 EUR to martin, felix at supermarket
