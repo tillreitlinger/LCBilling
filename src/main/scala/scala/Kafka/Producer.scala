@@ -1,7 +1,10 @@
 package scala.Kafka
 
 import java.util.Properties
+import java.util.concurrent.Future
+
 import org.apache.kafka.clients.producer._
+
 
 class Producer{
 
@@ -17,18 +20,20 @@ class Producer{
   val CLOSE_WRITER_KEY="closewriter"
 
 
-  def sendNewAccountBalance(newAccountBalance:String): Unit ={
+  def sendNewAccountBalance(newAccountBalance:String) ={
     val message = new ProducerRecord(ACCOUNT_BALANCE_TOPIC, BALANCE_DATA_KEY, newAccountBalance)
-    val send_return = producer.send(message)
-    print(send_return)
+    val send_result : Future[RecordMetadata] = producer.send(message)
+    send_result
+
   }
-  def sendCloseWriterStream(): Unit ={
+  def sendCloseWriterStream() ={
     val message = new ProducerRecord(ACCOUNT_BALANCE_TOPIC, CLOSE_WRITER_KEY, "closewriter")
     producer.send(message)
   }
-  def closeProducer(): Unit ={
+  def closeProducer() ={
     println("Producer closed")
     producer.close()
+    true
   }
 }
 

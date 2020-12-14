@@ -36,6 +36,7 @@ object Consumer extends App {
             writer = new BufferedWriter(new FileWriter("./src/output.txt"))
             isWriterOpen = true
           }
+          print(record.value())
           writer.write(record.value())
         }
         case CLOSE_WRITER_KEY => {
