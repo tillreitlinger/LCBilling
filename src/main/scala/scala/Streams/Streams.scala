@@ -29,10 +29,9 @@ class Streams(bankActor: ActorRef, readFileName: String){
     val resultString : Future[Any]=bankActor.ask(GetCSV)(2.seconds)
     val returnString = Await.result(resultString,Duration.Inf)
     returnString.toString + "\n"
-    1
   })
 
-  val sendAccountBalanceViaKafka= Sink.foreach[Int](producer.sendNewAccountBalance)//Sink.foreach[String](writer.write)
+  val sendAccountBalanceViaKafka= Sink.foreach[String](producer.sendNewAccountBalance)//Sink.foreach[String](writer.write)
 
   def closeWriterStream(){
     producer.sendCloseWriterStream()
