@@ -4,6 +4,7 @@ import java.io.{BufferedWriter, FileWriter}
 import java.util
 import java.util.Properties
 import org.apache.kafka.clients.consumer.{ConsumerRecord, KafkaConsumer}
+import scala.Kafka.CustomObject.BankBalance
 
 import scala.jdk.CollectionConverters._
 
@@ -15,6 +16,7 @@ object Consumer extends App {
     props.put("bootstrap.servers", "localhost:9092")
     props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
     props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer")
+    props.put("value.deserializer","scala.Kafka.CustomObject.BankBalanceDeSerializer")
     props.put("group.id", "something")
 
     val consumer = new KafkaConsumer[String, String](props)
@@ -43,7 +45,7 @@ object Consumer extends App {
       println("Empfange..")
       val records=consumer.poll(100)
       for (record<-records.asScala){
-        matchKeyResult  = matchKey(record.key, record.value, BALANCE_DATA_KEY, CLOSE_WRITER_KEY, matchKeyResult._2, matchKeyResult._1)
+        matchKeyResult  = matchKey(record.key, record.value(), BALANCE_DATA_KEY, CLOSE_WRITER_KEY, matchKeyResult._2, matchKeyResult._1)
       }
     }
   }

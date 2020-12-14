@@ -7,6 +7,7 @@ import akka.stream.scaladsl.{Flow, Sink, Source}
 
 import scala.Actor.Messages.{GetCSV, Transaction}
 import scala.ExternalDSL.BillingParserModel
+import scala.Kafka.CustomObject.BankBalance
 import scala.Kafka.Producer
 import scala.concurrent.duration.{Duration, DurationInt}
 import scala.concurrent.{Await, Future}

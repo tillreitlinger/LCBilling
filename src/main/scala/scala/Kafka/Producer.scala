@@ -2,7 +2,7 @@ package scala.Kafka
 
 import java.util.Properties
 import java.util.concurrent.Future
-
+import scala.Kafka.CustomObject.{BankBalance, BankBalanceDeSerializer}
 import org.apache.kafka.clients.producer._
 
 
@@ -12,8 +12,9 @@ class Producer{
   props.put("bootstrap.servers", "localhost:9092")
   props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")
   props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer")
+  props.put("value.serializer","scala.Kafka.CustomObject.BankBalanceSetializer")
 
-  val producer = new KafkaProducer[String, String](props)
+  val producer = new KafkaProducer[String, BankBalance](props)
 
   val ACCOUNT_BALANCE_TOPIC="accountbalance"
   val BALANCE_DATA_KEY="balancedata"
@@ -21,13 +22,12 @@ class Producer{
 
 
   def sendNewAccountBalance(newAccountBalance:String) ={
-    val message = new ProducerRecord(ACCOUNT_BALANCE_TOPIC, BALANCE_DATA_KEY, newAccountBalance)
+    val message = new ProducerRecord(ACCOUNT_BALANCE_TOPIC, BALANCE_DATA_KEY, new BankBalance(bankBalance = newAccountBalance))
     val send_result : Future[RecordMetadata] = producer.send(message)
     send_result
-
   }
   def sendCloseWriterStream() ={
-    val message = new ProducerRecord(ACCOUNT_BALANCE_TOPIC, CLOSE_WRITER_KEY, "closewriter")
+    val message = new ProducerRecord(ACCOUNT_BALANCE_TOPIC, CLOSE_WRITER_KEY, new BankBalance(bankBalance = "closewriter"))
     producer.send(message)
   }
   def closeProducer() ={
