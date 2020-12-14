@@ -9,8 +9,8 @@ class BankBalanceDeserializer extends Deserializer[BankBalance] {
 
   override def deserialize(s: String, bytes: Array[Byte]): BankBalance = {
     val mapper = new ObjectMapper()
-    val user = mapper.readValue(bytes, classOf[BankBalance])
-    user
+    val bankBalance = mapper.readValue(bytes, classOf[BankBalance])
+    bankBalance
   }
 
   override def close(): Unit = {
