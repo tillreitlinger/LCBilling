@@ -9,7 +9,6 @@ import scala.Streams.Streams
 import scala.concurrent.ExecutionContext.Implicits.global
 
 object LCBilling extends App {
-
   implicit val system = ActorSystem("Main-System")
   val bankActor = system.actorOf(Props[Bank], "bank")
 
@@ -25,6 +24,4 @@ object LCBilling extends App {
     streams.closeWriterStream
     print("Finished")
   })
-
-
 }

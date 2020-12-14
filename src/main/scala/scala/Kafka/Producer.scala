@@ -2,7 +2,7 @@ package scala.Kafka
 
 import java.util.Properties
 import java.util.concurrent.Future
-import scala.Kafka.CustomObject.{BankBalance, BankBalanceDeSerializer}
+import scala.Kafka.CustomObject.{BankBalance, BankBalanceDeserializer}
 import org.apache.kafka.clients.producer._
 
 
@@ -11,8 +11,7 @@ class Producer{
   val  props = new Properties()
   props.put("bootstrap.servers", "localhost:9092")
   props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")
-  props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer")
-  props.put("value.serializer","scala.Kafka.CustomObject.BankBalanceSetializer")
+  props.put("value.serializer","scala.Kafka.CustomObject.BankBalanceSerializer")
 
   val producer = new KafkaProducer[String, BankBalance](props)
 

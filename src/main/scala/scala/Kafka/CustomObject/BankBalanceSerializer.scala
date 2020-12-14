@@ -4,11 +4,10 @@ package scala.Kafka.CustomObject
  import java.util
  import org.apache.kafka.common.serialization.Serializer
 
-  class BankBalanceSetializer extends Serializer[BankBalance]{
+  class BankBalanceSerializer extends Serializer[BankBalance]{
 
     override def configure(map: util.Map[String, _], b: Boolean): Unit = {
     }
-
     override def serialize(s: String, t: BankBalance): Array[Byte] = {
       if(t==null)
         null
@@ -18,7 +17,6 @@ package scala.Kafka.CustomObject
         objectMapper.writeValueAsString(t).getBytes
       }
     }
-
     override def close(): Unit = {
     }
 }
