@@ -18,3 +18,4 @@ libraryDependencies += "com.typesafe.akka" %% "akka-stream-testkit" % AkkaVersio
 libraryDependencies += "org.apache.kafka" %% "kafka" % "2.6.0"
 
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.1.3" % Runtime
+

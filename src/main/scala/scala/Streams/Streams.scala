@@ -7,8 +7,7 @@ import akka.stream.scaladsl.{Flow, Sink, Source}
 
 import scala.Actor.Messages.{GetCSV, Transaction}
 import scala.ExternalDSL.BillingParserModel
-import scala.Kafka.CustomObject.BankBalance
-import scala.Kafka.Producer
+import scala.Kafka.{OutlayProducer, Producer}
 import scala.concurrent.duration.{Duration, DurationInt}
 import scala.concurrent.{Await, Future}
 
@@ -18,6 +17,7 @@ class Streams(bankActor: ActorRef, readFileName: String){
   val billingParserModel = new BillingParserModel()
 
   val producer = new Producer()
+  val outlay_producer = new OutlayProducer()
 
   val linesFromTXT: Source[String, NotUsed] = Source(input_from_txt.drop(1))
 
@@ -31,6 +31,8 @@ class Streams(bankActor: ActorRef, readFileName: String){
     val returnString = Await.result(resultString,Duration.Inf)
     returnString.toString + "\n"
   })
+
+  val sendOutlayToSparkConsumer = Sink.foreach[Outlay](outlay_producer.sendNewOutlay)
 
   val sendAccountBalanceViaKafka= Sink.foreach[String](producer.sendNewAccountBalance)//Sink.foreach[String](writer.write)
 

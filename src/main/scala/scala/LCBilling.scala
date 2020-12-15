@@ -1,12 +1,14 @@
 package scala
 
+import akka.NotUsed
 import akka.actor.{ActorSystem, Props}
+import akka.stream.ClosedShape
+import akka.stream.scaladsl.{Broadcast, GraphDSL, RunnableGraph}
 
 import scala.Actor.Bank
 import scala.Actor.Messages.CreateBankAccount
 import scala.ExternalDSL.BillingParserModel
 import scala.Streams.Streams
-import scala.concurrent.ExecutionContext.Implicits.global
 
 object LCBilling extends App {
   implicit val system = ActorSystem("Main-System")
@@ -20,8 +22,26 @@ object LCBilling extends App {
   lc.get.roommates.map(roomate => bankActor ! CreateBankAccount(roomate))
 
   val streams = new Streams(bankActor, "./src/text.txt")
-  streams.linesFromTXT.via(streams.generateOutlay).via(streams.doTransaction).runWith(streams.sendAccountBalanceViaKafka).onComplete(_ => {
-    streams.closeWriterStream
-    print("Finished")
+
+  val g = RunnableGraph.fromGraph(GraphDSL.create() { implicit builder: GraphDSL.Builder[NotUsed] =>
+    import GraphDSL.Implicits._
+    val in = streams.linesFromTXT
+    val sendAccountBalanceViaKafka = streams.sendAccountBalanceViaKafka
+    val sendOutlayToSparkConsumer = streams.sendOutlayToSparkConsumer
+    val bcast = builder.add(Broadcast[Outlay](2))
+    val generateOutlay = streams.generateOutlay
+    val doTransaction = streams.doTransaction
+
+    in ~> generateOutlay ~> bcast
+    bcast ~> doTransaction ~> sendAccountBalanceViaKafka
+    bcast ~> sendOutlayToSparkConsumer
+    ClosedShape
   })
+  g.run()
+
+  /* streams.linesFromTXT.via(streams.generateOutlay).via(streams.doTransaction).runWith(streams.sendAccountBalanceViaKafka).onComplete(_ => {
+   streams.closeWriterStream
+   print("Finished")
+ })
+ */
 }
