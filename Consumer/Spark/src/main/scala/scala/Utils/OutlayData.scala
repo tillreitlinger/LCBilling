@@ -1,4 +1,4 @@
-package scala
+package scala.Utils
 
 class OutlayData {
   private var payedFrom:String = ""
