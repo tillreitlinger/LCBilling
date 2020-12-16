@@ -32,7 +32,11 @@ class Streams(bankActor: ActorRef, readFileName: String){
     returnString.toString + "\n"
   })
 
-  val sendOutlayToSparkConsumer = Sink.foreach[Outlay](outlay_producer.sendNewOutlay)
+  val generateOutlayData = Flow[Outlay].map(outlay => {
+    new OutlayData(payedFrom = outlay.payedFrom.get, payedFor = outlay.payedFor.get.toArray, amount = outlay.amount.get, payedAt = outlay.at.get)
+  })
+
+  val sendOutlayToSparkConsumer = Sink.foreach[OutlayData](outlay_producer.sendNewOutlay)
 
   val sendAccountBalanceViaKafka= Sink.foreach[String](producer.sendNewAccountBalance)//Sink.foreach[String](writer.write)
 

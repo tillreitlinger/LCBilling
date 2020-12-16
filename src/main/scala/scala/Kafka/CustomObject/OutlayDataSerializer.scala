@@ -5,10 +5,10 @@ import java.util
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.apache.kafka.common.serialization.Serializer
 
-class OutlaySerializer extends Serializer[Outlay]{
+class OutlayDataSerializer extends Serializer[OutlayData]{
   override def configure(map: util.Map[String, _], b: Boolean): Unit = {
   }
-  override def serialize(s: String, t: Outlay): Array[Byte] = {
+  override def serialize(s: String, t: OutlayData): Array[Byte] = {
     if(t==null)
       null
     else

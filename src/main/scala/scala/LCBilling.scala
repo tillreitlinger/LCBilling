@@ -31,10 +31,11 @@ object LCBilling extends App {
     val bcast = builder.add(Broadcast[Outlay](2))
     val generateOutlay = streams.generateOutlay
     val doTransaction = streams.doTransaction
+    val generateOutlayData = streams.generateOutlayData
 
     in ~> generateOutlay ~> bcast
     bcast ~> doTransaction ~> sendAccountBalanceViaKafka
-    bcast ~> sendOutlayToSparkConsumer
+    bcast ~> generateOutlayData ~> sendOutlayToSparkConsumer
     ClosedShape
   })
   g.run()
