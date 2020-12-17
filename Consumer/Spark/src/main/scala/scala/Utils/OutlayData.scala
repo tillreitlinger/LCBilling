@@ -1,6 +1,6 @@
 package scala.Utils
 
-class OutlayData {
+class OutlayData extends Serializable{
   private var payedFrom:String = ""
   private var payedFor:Array[String] = Array()
   private var amount:Double = 0.0
