@@ -10,10 +10,8 @@ class OutlayDataDeserializer extends Deserializer[OutlayData] {
   }
 
   override def deserialize(s: String, bytes: Array[Byte]): OutlayData = {
-    print("Im here")
     val mapper = new ObjectMapper()
     val outlayData = mapper.readValue(bytes, classOf[OutlayData])
-    print(outlayData.getPayedFrom)
     outlayData
   }
 

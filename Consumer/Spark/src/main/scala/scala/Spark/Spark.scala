@@ -1,107 +1,88 @@
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.serialization.StringDeserializer
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.streaming.dstream.{DStream, InputDStream}
+import org.apache.spark.streaming.kafka010.{KafkaUtils, _}
 import org.apache.spark.streaming.{Seconds, StreamingContext}
-import org.apache.spark.streaming.kafka010._
-import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
-import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe
+import org.apache.spark.{SparkConf, SparkContext}
 
-import scala.Utils.{OutlayData, OutlayDataDeserializer}
+import scala.Spark.DataAnalytics
+import scala.Utils.OutlayData
 
 object Spark {
 
-   def main(args: Array[String]) {
-     val spark = SparkSession.builder.appName("Spark Streaming").config("spark.master", "local[*]").getOrCreate()
+  def main(args: Array[String]) {
+    val sparkConfig = new SparkConf().setMaster("local[*]").setAppName("OutlayStream")
+    val sparkStreamingContext = new StreamingContext(sparkConfig, Seconds(1))
+    sparkStreamingContext.sparkContext.setLogLevel("ERROR")
 
-     val kafkaParams = Map[String, Object](
-       "bootstrap.servers" -> "localhost:9092",
-       "key.deserializer" -> classOf[StringDeserializer],
-       "value.deserializer" -> "scala.Utils.OutlayDataDeserializer",
-       "value.serializer" -> "scala.Utils.OutlayDataSerializer",
-       "group.id" -> "something",
-       "auto.offset.reset" -> "latest",
-       "enable.auto.commit" -> (false: java.lang.Boolean)
-     )
+    val kafkaConfig = Map[String, Object](
+      "bootstrap.servers" -> "localhost:9092",
+      "key.deserializer" -> classOf[StringDeserializer],
+      "value.deserializer" -> "scala.Utils.OutlayDataDeserializer",
+      "group.id" -> "something",
+      "auto.offset.reset" -> "latest",
+      "enable.auto.commit" -> (false: java.lang.Boolean)
+    )
+    val kafkaTopics = Array("outlay")
 
-     val streamingContext = new StreamingContext(spark.sparkContext, Seconds(1))
+    val kafkaRawStream: InputDStream[ConsumerRecord[String, OutlayData]] =
+      KafkaUtils.createDirectStream[String, OutlayData](
+        sparkStreamingContext,
+        LocationStrategies.PreferConsistent,
+        ConsumerStrategies.Subscribe[String, OutlayData](kafkaTopics, kafkaConfig)
+      )
+    val outlayStream: DStream[OutlayData] = kafkaRawStream map (streamRawRecord => streamRawRecord.value)
 
-     val topics = Array("outlay")
-     val stream = KafkaUtils.createDirectStream[String, OutlayData](
-       streamingContext,
-       PreferConsistent,
-       Subscribe[String, OutlayData](topics, kafkaParams)
-     )
-//     val streamContent = stream.map(record=>(record.value().toString)).print
+    val outlayStream1Second: DStream[OutlayData] = outlayStream.window(Seconds(1))
 
-     stream.foreachRDD(data => {
-       print(data)
-     })
+    val outlayData1Second: DStream[(String, Array[String], Double, String)] =
+      outlayStream1Second.map(outlayRecord => (outlayRecord.getPayedFrom, outlayRecord.getPayedFor, outlayRecord.getAmount, outlayRecord.getPayedAt))
 
+    val dataAnalytics = new DataAnalytics
+    outlayData1Second.foreachRDD{ currentRdd =>
+      if (currentRdd.isEmpty()) {
+        println("Es gab keine neuen Daten...")
+      }
+      else {
+        val spark = SparkSession.builder.config(currentRdd.sparkContext.getConf).getOrCreate()
+        import spark.implicits._
 
-     streamingContext.start()
-     stream.start()
-     streamingContext.awaitTermination()
+        val outlayDataFrame: DataFrame = currentRdd.toDF()
+        outlayDataFrame.createOrReplaceTempView("outlayDataFrame")
 
-     //    val outlays = List(
-     //      Outlay(Some("Martin"), Some(Seq("Till", "Paul")), Some(10), Some("cinema")),
-     //      Outlay(Some("Till"), Some(Seq("Till", "Paul", "Martin")), Some(2), Some("cinema")),
-     //      Outlay(Some("Martin"), Some(Seq("Till", "Paul", "Martin")), Some(222), Some("cinema")),
-     //    )
-     //    val roommatesWhithCountofPayments = getRoommateWithCountOfPayments(spark, outlays)
-     //    val roommatesWhithCountofIncompingPayments = getRoommateWithCountOfIncompingPayments(spark, outlays)
-     //    val maxPaymentAmount = getMaxPaymentAmount(spark, outlays)
-     //    val minPaymentAmount = getMinPaymentAmount(spark, outlays)
-     //    val averagePaymentAmount = getAverageAmount(spark, outlays)
-     //
-     //    println("Payments:")
-     //    roommatesWhithCountofPayments.foreach(println)
-     //    println("Receivements:")
-     //    roommatesWhithCountofIncompingPayments.foreach(println)
-     //    println("Max Amount:")
-     //    println(maxPaymentAmount)
-     //    println("Min Amount:")
-     //    println(minPaymentAmount)
-     //    println("Average Amount:")
-     //    println(averagePaymentAmount)
-     //    spark.stop()
-     //  }
+        val countDataFrame: DataFrame = spark.sql("select count(*) as total from outlayDataFrame")
+        countDataFrame.show()
 
+        val completeDataFrame = spark.sql("select * from outlayDataFrame")
+        completeDataFrame.show()
 
-//       def getRoommateWithCountOfPayments(spark: SparkSession, outlays: List[OutlayData]) = {
-//         val roommatesWhoPayed = spark.sparkContext.parallelize(outlays.map(outlay =>
-//           (outlay.getPayedFrom, 1))
-//         )
-//         val roommatesWihtCountOfPayments = roommatesWhoPayed.groupBy(_._1).mapValues(list => {
-//           list.map(_._2).sum
-//         })
-//         roommatesWihtCountOfPayments
-//       }
-     //
-     //  def getRoommateWithCountOfIncompingPayments(spark: SparkSession, outlays: List[Outlay]) = {
-     //    val roommatesWhoReceived = spark.sparkContext.parallelize(outlays.flatMap(outlay =>
-     //      outlay.payedFor.get.map(roommate => (roommate, 1)))
-     //    )
-     //    val roommatesWihtCountOfReceived = roommatesWhoReceived.groupBy(_._1).mapValues(list => {
-     //      list.map(_._2).sum
-     //    })
-     //    roommatesWihtCountOfReceived
-     //  }
-     //
-     //  def getMaxPaymentAmount(spark: SparkSession, outlays: List[Outlay]) = {
-     //    val amounts = spark.sparkContext.parallelize(outlays.map(outlay => outlay.amount.get))
-     //    amounts.max()
-     //  }
-     //
-     //  def getMinPaymentAmount(spark: SparkSession, outlays: List[Outlay]) = {
-     //    val amounts = spark.sparkContext.parallelize(outlays.map(outlay => outlay.amount.get))
-     //    amounts.min()
-     //  }
-     //
-     //  def getAverageAmount(spark: SparkSession, outlays: List[Outlay]) = {
-     //    val amountAndCountTuple = spark.sparkContext.parallelize(outlays.map(outlay => (outlay.amount.get,1.0)))
-     //    val amountAndCount = amountAndCountTuple.reduce((amountOne, amountTwo) => ( amountOne._1 + amountTwo._1, amountOne._2 + amountTwo._2 ))
-     //    amountAndCount._1/amountAndCount._2
-     //  }
-   }
- }
+        val amounts = currentRdd.collect().map { case (payedFrom, payedFor, amount, payedAt) => amount }
+        val payedFrom = currentRdd.collect().map { case (payedFrom, payedFor, amount, payedAt) => payedFrom }
+        val payedFor = currentRdd.collect().map { case (payedFrom, payedFor, amount, payedAt) => payedFor }
+        val payedAt = currentRdd.collect().map { case (payedFrom, payedFor, amount, payedAt) => payedAt }
+
+        val rommatesWithCountOfPayments = dataAnalytics.getValueWithCountOfValue(sparkStreamingContext.sparkContext, payedFrom)
+        print("rommatesWithCountOfPayments " + rommatesWithCountOfPayments.mkString("") + "\n")
+
+        val roommateWithCountOfIncompingPayments = dataAnalytics.getRoommateWithCountOfIncompingPayments(sparkStreamingContext.sparkContext, payedFor)
+        print("roommateWithCountOfIncompingPayments " + roommateWithCountOfIncompingPayments.mkString("") + "\n")
+
+        val maxPaymentAmount = dataAnalytics.getMaxPaymentAmount(sparkStreamingContext.sparkContext, amounts)
+        print("maxPaymentAmount " + maxPaymentAmount + "\n")
+
+        val minPaymentAmount = dataAnalytics.getMinPaymentAmount(sparkStreamingContext.sparkContext, amounts)
+        print("minPaymentAmount " + minPaymentAmount + "\n")
+
+        val averageAmount = dataAnalytics.getAverageAmount(sparkStreamingContext.sparkContext, amounts)
+        print("averageAmount " + averageAmount + "\n")
+
+        val placesWithCountOfPays = dataAnalytics.getValueWithCountOfValue(sparkStreamingContext.sparkContext, payedAt)
+        print("placesWithCountOfPays " + placesWithCountOfPays.mkString("") + "\n")
+      }
+    }
+    sparkStreamingContext.start()
+    sparkStreamingContext.awaitTermination()
+  }
+}
 
