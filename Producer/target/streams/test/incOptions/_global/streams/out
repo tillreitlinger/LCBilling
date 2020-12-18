@@ -1,0 +1,7 @@
+[debug] Created transactional ClassFileManager with tempDir = /home/till/Dokumente/AA Master Semester C/Moderne Programmiersprachen/LCBilling Projekt/LCBilling.git/target/scala-2.13/test-classes.bak
+[debug] About to delete class files:
+[debug] We backup class files:
+[debug] Registering generated classes:
+[debug] 	LCTest.class
+[debug] 	OutlayTest.class
+[debug] Removing the temporary directory used for backing up class files: /home/till/Dokumente/AA Master Semester C/Moderne Programmiersprachen/LCBilling Projekt/LCBilling.git/target/scala-2.13/test-classes.bak

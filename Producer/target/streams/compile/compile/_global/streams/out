@@ -1,0 +1,18 @@
+[debug] Acquiring lock on file /home/till/Dokumente/AA Master Semester C/Moderne Programmiersprachen/LCBilling Projekt/LCBilling.git/project/target/.sbt-compilation-infos/lcbilling-git-compile/.sbt-idea-lock ...
+[warn] /home/till/Dokumente/AA Master Semester C/Moderne Programmiersprachen/LCBilling Projekt/LCBilling.git/src/main/scala/LCBilling.scala:16:24: multiarg infix syntax looks like a tuple and will be deprecated
+[warn]       outlay from Paul towards (Till, Paul) of 500.EUR at supermarket,
+[warn]                        ^
+[warn] /home/till/Dokumente/AA Master Semester C/Moderne Programmiersprachen/LCBilling Projekt/LCBilling.git/src/main/scala/LCBilling.scala:17:24: multiarg infix syntax looks like a tuple and will be deprecated
+[warn]       outlay from Till towards (Till, Paul) of 400.EUR at cinema,
+[warn]                        ^
+[warn] /home/till/Dokumente/AA Master Semester C/Moderne Programmiersprachen/LCBilling Projekt/LCBilling.git/src/main/scala/LCBilling.scala:15:34: multiarg infix syntax looks like a tuple and will be deprecated
+[warn]     val bill = PetershausnerPark generateBill (
+[warn]                                  ^
+[info] Cleaning datadir [/home/till/Dokumente/AA Master Semester C/Moderne Programmiersprachen/LCBilling Projekt/LCBilling.git/target/scala-2.13/scoverage-data]
+[info] Beginning coverage instrumentation
+[info] Instrumentation completed [93 statements]
+[info] Wrote instrumentation file [/home/till/Dokumente/AA Master Semester C/Moderne Programmiersprachen/LCBilling Projekt/LCBilling.git/target/scala-2.13/scoverage-data/scoverage.coverage]
+[info] Will write measurement data to [/home/till/Dokumente/AA Master Semester C/Moderne Programmiersprachen/LCBilling Projekt/LCBilling.git/target/scala-2.13/scoverage-data]
+[warn] 1 feature warning; re-run with -feature for details
+[warn] four warnings found
+[debug] Releasing lock on file /home/till/Dokumente/AA Master Semester C/Moderne Programmiersprachen/LCBilling Projekt/LCBilling.git/project/target/.sbt-compilation-infos/lcbilling-git-compile/.sbt-idea-lock.

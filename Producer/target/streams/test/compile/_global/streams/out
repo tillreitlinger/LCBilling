@@ -1,0 +1,19 @@
+[debug] Acquiring lock on file /home/till/Dokumente/AA Master Semester C/Moderne Programmiersprachen/LCBilling Projekt/LCBilling.git/project/target/.sbt-compilation-infos/lcbilling-git-test/.sbt-idea-lock ...
+[warn] /home/till/Dokumente/AA Master Semester C/Moderne Programmiersprachen/LCBilling Projekt/LCBilling.git/src/test/scala/LCTest.scala:15:24: multiarg infix syntax looks like a tuple and will be deprecated
+[warn]       outlay from Paul towards (Till, Paul) of 500.EUR at supermarket,
+[warn]                        ^
+[warn] /home/till/Dokumente/AA Master Semester C/Moderne Programmiersprachen/LCBilling Projekt/LCBilling.git/src/test/scala/LCTest.scala:16:24: multiarg infix syntax looks like a tuple and will be deprecated
+[warn]       outlay from Till towards (Till, Paul) of 400.EUR at cinema,
+[warn]                        ^
+[warn] /home/till/Dokumente/AA Master Semester C/Moderne Programmiersprachen/LCBilling Projekt/LCBilling.git/src/test/scala/LCTest.scala:14:34: multiarg infix syntax looks like a tuple and will be deprecated
+[warn]     val bill = PetershausnerPark generateBill (
+[warn]                                  ^
+[warn] /home/till/Dokumente/AA Master Semester C/Moderne Programmiersprachen/LCBilling Projekt/LCBilling.git/src/test/scala/OutlayTest.scala:13:12: multiarg infix syntax looks like a tuple and will be deprecated
+[warn]     outlay towards ("Martin","Till") should be(result_outlay)
+[warn]            ^
+[warn] /home/till/Dokumente/AA Master Semester C/Moderne Programmiersprachen/LCBilling Projekt/LCBilling.git/src/test/scala/OutlayTest.scala:29:26: multiarg infix syntax looks like a tuple and will be deprecated
+[warn]     outlay from "Martin" towards ("Till", "Paul", "Martin") of 222.EUR at "cinema" should be(result_outlay)
+[warn]                          ^
+[warn] 1 deprecation (since 2.13.3); re-run with -deprecation for details
+[warn] 6 warnings found
+[debug] Releasing lock on file /home/till/Dokumente/AA Master Semester C/Moderne Programmiersprachen/LCBilling Projekt/LCBilling.git/project/target/.sbt-compilation-infos/lcbilling-git-test/.sbt-idea-lock.
