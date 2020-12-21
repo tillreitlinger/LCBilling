@@ -10,7 +10,6 @@ import scala.Spark.DataAnalytics
 import scala.Utils.OutlayData
 
 object Spark {
-
   def main(args: Array[String]) {
     val sparkConfig = new SparkConf().setMaster("local[*]").setAppName("OutlayStream")
     val sparkStreamingContext = new StreamingContext(sparkConfig, Seconds(1))
@@ -22,7 +21,7 @@ object Spark {
       "value.deserializer" -> "scala.Utils.OutlayDataDeserializer",
       "group.id" -> "outlayData",
       "auto.offset.reset" -> "latest",
-    "enable.auto.commit" -> (false: java.lang.Boolean)
+      "enable.auto.commit" -> (false: java.lang.Boolean)
     )
     val kafkaTopics = Array("outlay")
 
@@ -39,23 +38,39 @@ object Spark {
     val outlayData1Second: DStream[(String, Array[String], Double, String)] =
       outlayStream1Second.map(outlayRecord => (outlayRecord.getPayedFrom, outlayRecord.getPayedFor, outlayRecord.getAmount, outlayRecord.getPayedAt))
 
+
+    val spark = SparkSession.builder.config("spark.master", "local").getOrCreate()
+    import spark.implicits._
     val dataAnalytics = new DataAnalytics
+
+    var dataBase = Seq.empty[(String,Array[String],Double, String)].toDF("Payed From", "Payed To", "Amount", "Place")
+    dataBase.createOrReplaceTempView("OutlayDataBase")
+
     outlayData1Second.foreachRDD{ currentRdd =>
       if (currentRdd.isEmpty()) {
         println("Es gab keine neuen Daten...")
       }
       else {
-        val spark = SparkSession.builder.config(currentRdd.sparkContext.getConf).getOrCreate()
-        import spark.implicits._
+        //add new data to global database
+        dataBase = dataBase.union(currentRdd.toDF("Payed From", "Payed To", "Amount", "Place"))
+        dataBase.createOrReplaceTempView("OutlayDataBase")
 
+        //count values in global database
+        val countDataBase: DataFrame = spark.sql("select count(*) as total from OutlayDataBase").toDF("Count of all outlays")
+
+        //lokal database
         val outlayDataFrame: DataFrame = currentRdd.toDF()
         outlayDataFrame.createOrReplaceTempView("outlayDataFrame")
 
-        val countDataFrame: DataFrame = spark.sql("select count(*) as total from outlayDataFrame")
-        countDataFrame.show()
+        //count recieved values
+        val countDataFrame: DataFrame = spark.sql("select count(*) as total from outlayDataFrame").toDF("Count of recieved outlays")
+        //create df for recieved data
+        val completeDataFrame = spark.sql("select * from outlayDataFrame").toDF("Payed From", "Payed To", "Amount", "Place")
 
-        val completeDataFrame = spark.sql("select * from outlayDataFrame")
+        countDataFrame.show()
         completeDataFrame.show()
+        countDataBase.show()
+        dataBase.show()
 
         val amounts = currentRdd.collect().map { case (payedFrom, payedFor, amount, payedAt) => amount }
         val payedFrom = currentRdd.collect().map { case (payedFrom, payedFor, amount, payedAt) => payedFrom }
