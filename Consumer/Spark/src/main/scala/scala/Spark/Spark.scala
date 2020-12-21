@@ -20,9 +20,9 @@ object Spark {
       "bootstrap.servers" -> "localhost:9092",
       "key.deserializer" -> classOf[StringDeserializer],
       "value.deserializer" -> "scala.Utils.OutlayDataDeserializer",
-      "group.id" -> "something",
+      "group.id" -> "outlayData",
       "auto.offset.reset" -> "latest",
-      "enable.auto.commit" -> (false: java.lang.Boolean)
+    "enable.auto.commit" -> (false: java.lang.Boolean)
     )
     val kafkaTopics = Array("outlay")
 
@@ -32,7 +32,7 @@ object Spark {
         LocationStrategies.PreferConsistent,
         ConsumerStrategies.Subscribe[String, OutlayData](kafkaTopics, kafkaConfig)
       )
-    val outlayStream: DStream[OutlayData] = kafkaRawStream map (streamRawRecord => streamRawRecord.value)
+    val outlayStream: DStream[OutlayData] = kafkaRawStream.map(streamRawRecord => streamRawRecord.value())
 
     val outlayStream1Second: DStream[OutlayData] = outlayStream.window(Seconds(1))
 
