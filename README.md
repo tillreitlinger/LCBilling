@@ -1,8 +1,7 @@
-# Allgemeine Informationen
-Der gesamte Code für alle Abgaben ist in zwei Repositorys aufgeteilt.
-- Abgaben 1-4 & 11: https://github.com/PaulIVI/Minesweeper
-- Abgaben 5-10: Dieses Repository.
+# Internal DSL [![Build Status](https://travis-ci.org/tillreitlinger/LCBilling.svg?branch=feature%2Fadd_internal_dsl)](https://travis-ci.org/tillreitlinger/LCBilling) [![Coverage Status](https://coveralls.io/repos/github/tillreitlinger/LCBilling/badge.svg?branch=feature/add_internal_dsl)](https://coveralls.io/github/tillreitlinger/LCBilling?branch=feature/add_internal_dsl)
 
-Für die meisten Abgaben wurde ein extra Branch angelegt. Auf welchem Branch die Abgaben zu finden sind, kann in dem jeweiligen README des projektes nachgelesen werden.
-
-# LCBilling [![Build Status](https://travis-ci.org/tillreitlinger/LCBilling.svg?branch=main)](https://travis-ci.org/tillreitlinger/LCBilling) [![Coverage Status](https://coveralls.io/repos/github/tillreitlinger/LCBilling/badge.svg?branch=main)](https://coveralls.io/github/tillreitlinger/LCBilling?branch=main) 
+- main function: https://github.com/tillreitlinger/LCBilling/blob/feature/add_internal_dsl/src/main/scala/LCBilling.scala
+- buisness logic: https://github.com/tillreitlinger/LCBilling/blob/feature/add_internal_dsl/src/main/scala/LC.scala
+- for implicit: https://github.com/tillreitlinger/LCBilling/blob/feature/add_internal_dsl/src/main/scala/currency.scala
+- basic object for one input: https://github.com/tillreitlinger/LCBilling/blob/feature/add_internal_dsl/src/main/scala/Outlay.scala
+- aviable places in dsl: https://github.com/tillreitlinger/LCBilling/blob/feature/add_internal_dsl/src/main/scala/places.scala
