@@ -32,7 +32,7 @@ class Streams(bankActor: ActorRef, readFileName: String){
     returnString.toString + "\n"
   })
 
-  val sendAccountBalanceViaKafka= Sink.foreach[String](producer.sendNewAccountBalance)//Sink.foreach[String](writer.write)
+  val sendAccountBalanceViaKafka= Sink.foreach[String](producer.sendNewAccountBalance)
 
   def closeWriterStream(){
     producer.sendCloseWriterStream()
