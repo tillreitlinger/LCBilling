@@ -1,3 +1,3 @@
 # LCBilling [![Build Status](https://travis-ci.org/tillreitlinger/LCBilling.svg?branch=main)](https://travis-ci.org/tillreitlinger/LCBilling) [![Coverage Status](https://coveralls.io/repos/github/tillreitlinger/LCBilling/badge.svg?branch=main)](https://coveralls.io/github/tillreitlinger/LCBilling?branch=main) 
 
-The base of all other topic branches. External DSL Branch: add_external_dsl. Actor Branch: add_Actors.
+The base of all other topic branches.
